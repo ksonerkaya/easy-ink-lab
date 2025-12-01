@@ -1,4 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
+// TEMP: make process.env usable in the browser so the UI can load
+const process = {
+  env: {
+    GEMINI_API_KEY: "AIzaSyDQfCid5Vr_V9S3R0V3uOBGZ0Ky-klz4HA",
+  },
+};
 
 // Initialize the client
 // In a real production app, this key should be kept on a backend server to prevent exposure.
