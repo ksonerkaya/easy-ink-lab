@@ -4,7 +4,7 @@ import { InputSection } from './components/InputSection';
 import { ProcessingView } from './components/ProcessingView';
 import { ResultView } from './components/ResultView';
 import { StencilState } from './types';
-// import { generateTattooStencil } from './services/geminiService';
+import { generateTattooStencil } from './services/geminiService';
 
 const App: React.FC = () => {
   const [state, setState] = useState<StencilState>({
@@ -22,14 +22,14 @@ const App: React.FC = () => {
     });
 
     try {
-      // Call Gemini API to process the image
-      // const processed = await generateTattooStencil(base64);
-      
+      const processed = await generateTattooStencil(base64);
+
       setState(prev => ({
         ...prev,
         processedImage: processed,
         status: 'success'
       }));
+
     } catch (error: any) {
       setState(prev => ({
         ...prev,

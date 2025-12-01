@@ -1,19 +1,10 @@
 // services/geminiService.ts
-// Temporary stub so the UI works without Google AI in the browser.
+// Temporary stub so the UI works without real Google AI.
 
-export type StencilResult = {
-  previewUrl: string;
-  downloadUrl: string;
-};
-
-export async function generateStencilFromImage(_file: File): Promise<StencilResult> {
-  // TODO: connect to a backend API that calls @google/genai securely.
-  // For now just return a placeholder image so the app renders.
+export async function generateTattooStencil(_base64: string): Promise<string> {
+  // TODO: later connect this to a backend API that calls @google/genai.
   const placeholder =
     "https://dummyimage.com/1200x1600/ffffff/000000&text=Stencil+Preview";
 
-  return {
-    previewUrl: placeholder,
-    downloadUrl: placeholder,
-  };
+  return placeholder; // just return an image URL for now
 }
