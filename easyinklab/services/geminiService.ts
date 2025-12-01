@@ -5,7 +5,7 @@ const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_API_KEY);
 
 export async function generateTattooStencil(base64Image: string): Promise<string> {
   const model = genAI.getGenerativeModel({
-    model: "models/gemini-1.5-flash",
+    model: "gemini-2.5-flash",
   });
 
   const prompt = `
