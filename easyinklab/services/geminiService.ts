@@ -1,26 +1,31 @@
-import { GoogleGenerativeAI } from "@google/genai";
+// services/geminiService.ts
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = import.meta.env.VITE_GOOGLE_GENAI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_API_KEY);
 
-export async function generateTattooStencil(base64: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+export async function generateTattooStencil(base64Image: string): Promise<string> {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest", });
 
   const prompt = `
-    Extract ONLY the tattoo from this image.
-    Remove skin, shadows, background.
-    Convert into clean black lines, high contrast.
-    Output a stencil-like image, ideal for thermal printing.
-  `;
+You take a real tattoo photo and convert it into a clean, printable stencil.
+Strip skin, shadows, and background. Keep only crisp black outlines.
+Return a high-contrast stencil, black on white.
+Output ONLY the image.`;
 
   const result = await model.generateContent([
-    { inlineData: { data: base64, mimeType: "image/png" } },
-    { text: prompt }
+    {
+      inlineData: {
+        data: base64Image.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
+        mimeType: "image/jpeg",
+      },
+    },
+    prompt,
   ]);
 
-  const image = result.response.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+  const response = await result.response;
+  const image = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
 
-  if (!image) throw new Error("Gemini did not return an image.");
+  if (!image) throw new Error("No image returned from Gemini");
 
-  return `data:${image.mimeType};base64,${image.data}`;
+  return "data:image/png;base64," + image;
 }
